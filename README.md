@@ -2,7 +2,7 @@
 - Mata Kuliah: Struktur Data dan Analisis Algoritma
 - Kelas: Informatika A 2020
 - Dosen Pembimbing: Rosmasari, S.Kom.,MT / Masna Wati, S.Si.,MT
-- Bahasa Pemrograman: Python
+- Bahasa Pemrograman: Python / C++
 
 # Algoritma Sorting dengan metode Exchange Sort
 1. Tulis "Masukkan Data: "
