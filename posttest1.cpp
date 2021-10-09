@@ -62,7 +62,7 @@ void show_auth() {
 			break;
 		default:
 			cout << "========================================================================" << endl;
-	        cout << "| Error: Pilihan salah!                                                |" << endl;
+			cout << "| Error: Pilihan salah!                                                |" << endl;
 			cout << "========================================================================" << endl;
 			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 			show_auth();			
@@ -226,10 +226,10 @@ void add_vaksin() {
 		}
 	}
 	if(index != -1) {
-		char nama[128], produksi[128];
+		string nama, produksi;
 		cin.ignore();
-		cout << "| Masukkan Nama Vaksin 	: "; cin.getline(nama, 128);
-		cout << "| Masukkan Produksi Vaksin : "; cin.getline(produksi, 128);
+		cout << "| Masukkan Nama Vaksin 	: "; getline(cin, nama);
+		cout << "| Masukkan Produksi Vaksin : "; getline(cin, produksi);
 		nama_vaksin[index] = nama;
 		produksi_vaksin[index] = produksi;
 		penggunaan_vaksin[index] = 0;
@@ -315,7 +315,7 @@ void about_app() {
     cout << "|                      : 90020219079 (Jenius)                          |" << endl;
     cout << "|                      : 085346816962 (Dana/OVO/Gopay)                 |" << endl;
     cout << "|                                                                      |" << endl;
-    cout << "|                  Hak Cipta © 2021 Vaksinasi COVID-19                 |" << endl;
+    cout << "|                  Hak Cipta � 2021 Vaksinasi COVID-19                 |" << endl;
     cout << "========================================================================" << endl;
 	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 	show_menu();
