@@ -5,7 +5,7 @@ using namespace std;
 
 const int MAKS_VAKSIN = 10;
 //const int MAKS_VAKSINASI = 25;
-//const int MAKS_PENGGUNA = 25;
+const int MAKS_PENGGUNA = 25;
 
 string nama_vaksin[MAKS_VAKSIN] = {"Sinovac", "Moderna", "AstraZeneca", "Pfizer"};
 string produksi_vaksin[MAKS_VAKSIN] = {"Sinovac Biotech", "The National Institutes of Health (NIH)", "AstraZeneca", "Pfizer"};
@@ -21,9 +21,11 @@ int penggunaan_vaksin[MAKS_VAKSIN] = {0, 0, 0, 0};
 //int batch_vaksinasi[MAKS_VAKSINASI];
 //string kipi_vaksinasi[MAKS_VAKSINASI];
 
-//string username_pengguna[MAKS_PENGGUNA] = {"anddfian"};
-//string password_pengguna[MAKS_PENGGUNA] = {"anddfian"};
+string username_pengguna[MAKS_PENGGUNA] = {"anddfian"};
+string password_pengguna[MAKS_PENGGUNA] = {"anddfian"};
 
+void auth_register();
+void auth_login();
 void show_menu();
 void show_vaksin();
 void back_to_show_menu();
@@ -33,15 +35,127 @@ void delete_vaksin();
 void close_app();
 void about_app();
 
-void show_menu() {
-	int selected_menu;
+void show_auth() {
 	system("cls");
+	int selected_auth;
 	cout << "========================================================================" << endl;
     cout << "|                            SELAMAT DATANG                            |" << endl;
     cout << "|                                  DI                                  |" << endl;
     cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
     cout << "|                                 OLEH                                 |" << endl;
     cout << "|         ANDI ALFIAN BAHTIAR - 2009106002 - INFORMATIKA A 2020        |" << endl;
+	cout << "========================================================================" << endl;
+    cout << "| [1] Daftar Akun                                                      |" << endl;
+    cout << "| [2] Masuk Akun                                                       |" << endl;
+    cout << "| [0] Keluar Aplikasi                                                  |" << endl;
+	cout << "========================================================================" << endl;
+    cout << "Masukkan Pilihan> "; cin >> selected_auth;
+	switch(selected_auth) {
+		case 1:
+			auth_register();
+			break;
+		case 2:
+			auth_login();
+			break;
+		case 0:
+			close_app();
+			break;
+		default:
+			cout << "========================================================================" << endl;
+	        cout << "| Error: Pilihan salah!                                                |" << endl;
+			cout << "========================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			show_auth();			
+	}
+}
+
+void auth_register() {
+	system("cls");
+	cout << "========================================================================" << endl;
+    cout << "|                              DAFTAR AKUN                             |" << endl;
+	cout << "========================================================================" << endl;
+	string username, password;
+	cin.ignore();
+	cout << "| Username : "; getline(cin, username); 
+	cout << "| Password : "; getline(cin, password);
+	int status, index;
+	for(int i = 0; i < MAKS_PENGGUNA; i++) {
+		if(username_pengguna[i] == username) {
+			status = 1;
+			break;
+		}
+	}
+	if(status != 1) {
+		for(int i = 0; i < MAKS_PENGGUNA; i++) {
+			if(username_pengguna[i] == "") {
+				index = i;
+				break;
+			}
+		}
+		username_pengguna[index] = username;
+		password_pengguna[index] = password;
+        cout << "========================================================================" << endl;
+        cout << "| Sukses: Akun berhasil dibuat dan disimpan!                           |" << endl;
+        cout << "========================================================================" << endl;
+	} else {		
+		cout << "========================================================================" << endl;
+        cout << "| Error: Akun tersebut telah didaftarkan!                              |" << endl;
+        cout << "========================================================================" << endl;
+	}
+	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+	show_auth();
+}
+
+void auth_login() {
+	system("cls");
+	cout << "======================================================================" << endl;
+    cout << "|                                LOGIN                               |" << endl;
+    cout << "======================================================================" << endl;
+    string username, password;
+    cin.ignore();
+    cout << "| Username : "; getline(cin, username);
+    cout << "| Password : "; getline(cin, password);
+	int status;
+    for(int i = 0; i < MAKS_PENGGUNA; i++) {
+		if(username_pengguna[i] == username) {
+			if(password_pengguna[i] == password) {
+				status = 3;
+				break;
+			} else {
+				status = 2;
+				break;
+			}
+		} else {
+			status = 1;
+			continue;
+		}
+	}
+	switch(status) {
+		case 1:
+			cout << "======================================================================" << endl;
+            cout << "| Error: Username tidak ditemukan!                                   |" << endl;
+            cout << "======================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			show_auth();
+			break;
+		case 2:
+			cout << "======================================================================" << endl;
+            cout << "| Error: Password salah!                                             |" << endl;
+            cout << "======================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			show_auth();
+			break;
+		case 3:
+			show_menu();
+			break;
+	}
+}
+
+void show_menu() {
+	system("cls");
+	int selected_menu;
+	cout << "========================================================================" << endl;
+    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
     cout << "========================================================================" << endl;
     cout << "| [1] Lihat Data Vaksin COVID-19                                       |" << endl;
     cout << "| [2] Tambah Data Vaksin COVID-19                                      |" << endl;
@@ -112,11 +226,10 @@ void add_vaksin() {
 		}
 	}
 	if(index != -1) {
-		string nama, produksi;
-		cout << "Masukkan Nama Vaksin 	  : ";
-		getline(cin, nama);
-		cout << "Masukkan Produksi Vaksin : ";
-		getline(cin, produksi);			
+		char nama[128], produksi[128];
+		cin.ignore();
+		cout << "| Masukkan Nama Vaksin 	: "; cin.getline(nama, 128);
+		cout << "| Masukkan Produksi Vaksin : "; cin.getline(produksi, 128);
 		nama_vaksin[index] = nama;
 		produksi_vaksin[index] = produksi;
 		penggunaan_vaksin[index] = 0;
@@ -146,9 +259,10 @@ void edit_vaksin() {
 	}
 	int nomor;
 	string nama, produksi;
-	cout << "Masukkan Nomor Vaksin    : "; cin >> nomor;
-	cout << "Masukkan Nama Vaksin     : "; getline(cin, nama);
-	cout << "Masukkan Produksi Vaksin : "; getline(cin, produksi);
+	cout << "| Masukkan Nomor Vaksin    : "; cin >> nomor;
+	cin.ignore();
+	cout << "| Masukkan Nama Vaksin     : "; getline(cin, nama);
+	cout << "| Masukkan Produksi Vaksin : "; getline(cin, produksi);
 	nama_vaksin[nomor-1] = nama;
 	produksi_vaksin[nomor-1] = produksi;
     cout << "========================================================================" << endl;
@@ -175,7 +289,7 @@ void delete_vaksin() {
 		}
 	}
 	int nomor;
-	cout << "Masukkan Nomor Vaksin : "; cin >> nomor;
+	cout << "| Masukkan Nomor Vaksin : "; cin >> nomor;
 	nama_vaksin[nomor-1] = "";
 	produksi_vaksin[nomor-1] = "";
 	penggunaan_vaksin[nomor-1] = 0;
@@ -220,7 +334,7 @@ void close_app() {
 int main() {
 	while(true) {
 		try {
-			show_menu();
+			show_auth();
 		} catch(...) {
 			close_app();
 		}
