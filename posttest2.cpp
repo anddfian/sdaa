@@ -2,7 +2,6 @@
 #include<conio.h>
 #include<stdlib.h>
 #include<ctime>
-#include<fstream>
 using namespace std;
 
 const int MAKS_VAKSIN = 10, MAKS_VAKSINASI = 25, MAKS_ACCOUNT = 25, MAKS_DIVAKSIN = 2;
@@ -28,13 +27,11 @@ struct Account {
 	string password;
 };
 
-string username_pengguna[MAKS_PENGGUNA] = {"anddfian"}, password_pengguna[MAKS_PENGGUNA] = {"anddfian"};
-
 Account account[MAKS_ACCOUNT];
 
 void final_vaksinasi(int index, int tahap); void proses_vaksinasi_keempat(int index, int tahap); void proses_vaksinasi_ketiga(int index, int tahap); void proses_vaksinasi_kedua(int index, int tahap);
-void proses_vaksinasi_pertama(); void show_menu_vaksinasi(); void show_menu_vaksin(); void auth_register(); void auth_login(); void show_menu(); void show_vaksin();
-void back_to_show_menu(); void add_vaksin(); void edit_vaksin(); void delete_vaksin(); void close_app(); void about_app();
+void proses_vaksinasi_pertama(); void show_menu_vaksinasi(); void show_menu_vaksin(); void auth_register(); void auth_login(); void show_menu(); void show_vaksin(Vaksin *vaksin);
+void back_to_show_menu(); void add_vaksin(Vaksin *vaksin); void edit_vaksin(Vaksin *vaksin); void delete_vaksin(); void close_app(); void about_app();
 int insert_meja_pertama(long long nik, string nama, string tanggal_lahir, long long no_hp, string alamat); bool insert_meja_keempat(int index, int tahap, string kipi);
 bool insert_meja_ketiga(int index, int tahap, int nomor_vaksin, int nomor_batch_vaksin); bool insert_meja_kedua(int index, int tahap, float suhu_tubuh, string tekanan_darah);
 void show_statistik_vaksinasi(); void show_vaksinasi(); int check_meja_pertama(long long nik);
@@ -213,13 +210,13 @@ void show_menu_vaksin() {
 	cout << "Pilih Menu> "; cin >> selected_menu;
 	switch(selected_menu) {
 		case 1:
-			show_vaksin();
+			show_vaksin(&vaksin[0]);
 			break;
 		case 2:
-			add_vaksin();
+			add_vaksin(&vaksin[0]);
 			break;
 		case 3:
-			edit_vaksin();
+			edit_vaksin(&vaksin[0]);
 			break;
 		case 4:
 			delete_vaksin();
@@ -332,46 +329,44 @@ void show_vaksinasi() {
 	show_menu_vaksinasi();
 }
 
-
-void show_vaksin() {
+void show_vaksin(Vaksin *vaksin) {
 	system("cls");
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
 	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksin[i].nama == "") {
+		if(vaksin->nama == "") {
 			continue;
 		} else {
 			cout << "| Vaksin ke-" << i + 1 << endl;
-			cout << "| Nama Vaksin : " << vaksin[i].nama << endl;
-			cout << "| Produksi    : " << vaksin[i].produksi << endl;
-			cout << "| Penggunaan  : " << vaksin[i].penggunaan << endl;
+			cout << "| Nama Vaksin : " << vaksin->nama << endl;
+			cout << "| Produksi    : " << vaksin->produksi << endl;
+			cout << "| Penggunaan  : " << vaksin->penggunaan << endl;
 		    cout << "========================================================================" << endl;
 		}
+		vaksin++;
 	}
 	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 	show_menu_vaksin();
 }
 
-void add_vaksin() {
+void add_vaksin(Vaksin *vaksin) {
 	system("cls");
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
 	int index = -1;
 	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksin[i].nama == "") {
+		if(vaksin->nama == "") {
 			index = i;
 			break;
 		}
+		vaksin++;
 	}
 	if(index != -1) {
-		string nama, produksi;
 		cin.ignore();
-		cout << "| Masukkan Nama Vaksin     : "; getline(cin, nama);
-		cout << "| Masukkan Produksi Vaksin : "; getline(cin, produksi);
-		vaksin[index].nama = nama;
-		vaksin[index].produksi = produksi;
+		cout << "| Masukkan Nama Vaksin     : "; getline(cin, vaksin->nama);
+		cout << "| Masukkan Produksi Vaksin : "; getline(cin, vaksin->produksi);
 		vaksin[index].penggunaan = 0;
 	    cout << "========================================================================" << endl;
         cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
@@ -381,21 +376,22 @@ void add_vaksin() {
 	show_menu_vaksin();
 }
 
-void edit_vaksin() {
+void edit_vaksin(Vaksin *vaksin) {
 	system("cls");
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
 	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksin[i].nama == "") {
+		if(vaksin->nama == "") {
 			continue;
 		} else {
 			cout << "| Vaksin ke-" << i+1 << endl;
-			cout << "| Nama Vaksin : " << vaksin[i].nama << endl;
-			cout << "| Produksi    : " << vaksin[i].produksi << endl;
-			cout << "| Penggunaan  : " << vaksin[i].penggunaan << endl;
+			cout << "| Nama Vaksin : " << vaksin->nama << endl;
+			cout << "| Produksi    : " << vaksin->produksi << endl;
+			cout << "| Penggunaan  : " << vaksin->penggunaan << endl;
 		    cout << "========================================================================" << endl;
 		}
+		vaksin++;
 	}
 	int nomor;
 	string nama, produksi;
