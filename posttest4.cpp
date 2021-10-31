@@ -530,12 +530,16 @@ void sort_vaksin_order(int category, int method) {
 	switch(selected_menu) {
 		case 1:
 			sort_vaksin(category, method, selected_menu);
+			cout << "========================================================================" << endl;
+	        cout << "| Sukses: Data Vaksin berhasil diurutkan!                              |" << endl;
 		    cout << "========================================================================" << endl;
 			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 			show_menu();
 			break;
 		case 2:
 			sort_vaksin(category, method, selected_menu);
+			cout << "========================================================================" << endl;
+	        cout << "| Sukses: Data Vaksin berhasil diurutkan!                              |" << endl;
 		    cout << "========================================================================" << endl;
 			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 			show_menu();
@@ -678,32 +682,32 @@ int jumpSearch(Vaksin *vaksinp, int n, string x, int category) {
 	int step = sqrt(n);
 	int prev = 0;
 	if(category == 1) {
-		while (vaksinp[min(step, n)-1].nama < x) {
+		while(vaksinp[min(step, n)-1].nama < x) {
 			prev = step;
 			step += sqrt(n);
-			if (prev >= n)
+			if(prev >= n)
 				return -1;
 		}
-		while (vaksinp[prev].nama < x) {
+		while(vaksinp[prev].nama < x) {
 			prev++;
-			if (prev == min(step, n))
+			if(prev == min(step, n))
 				return -1;
 		}
-		if (vaksinp[prev].nama == x)
+		if(vaksinp[prev].nama == x)
 			return prev;
 	} else if(category == 2) {
-		while (vaksinp[min(step, n)-1].produksi < x) {
+		while(vaksinp[min(step, n)-1].produksi < x) {
 			prev = step;
 			step += sqrt(n);
-			if (prev >= n)
+			if(prev >= n)
 				return -1;
 		}
-		while (vaksinp[prev].produksi < x) {
+		while(vaksinp[prev].produksi < x) {
 			prev++;
-			if (prev == min(step, n))
+			if(prev == min(step, n))
 				return -1;
 		}
-		if (vaksinp[prev].produksi == x)
+		if(vaksinp[prev].produksi == x)
 			return prev;
 	}
 	return -1;
@@ -713,18 +717,18 @@ int jumpSearch(Vaksin *vaksinp, int n, int x, int category) {
 	int step = sqrt(n);
 	int prev = 0;
 	if(category == 3) {
-		while (vaksinp[min(step, n)-1].penggunaan < x) {
+		while(vaksinp[min(step, n)-1].penggunaan < x) {
 			prev = step;
 			step += sqrt(n);
-			if (prev >= n)
+			if(prev >= n)
 				return -1;
 		}
-		while (vaksinp[prev].penggunaan < x) {
+		while(vaksinp[prev].penggunaan < x) {
 			prev++;
-			if (prev == min(step, n))
+			if(prev == min(step, n))
 				return -1;
 		}
-		if (vaksinp[prev].penggunaan == x)
+		if(vaksinp[prev].penggunaan == x)
 			return prev;
 	}
 	return -1;
@@ -749,17 +753,17 @@ void search_vaksin(int category, int method) {
 	switch(category) {
 		case 1:
 			cout << "| Data yang ingin dicari> "; cin >> search_str;
-			shellSort(&vaksin[0], count_vaksin_valid);
+			sort_vaksin(category, 1, 1);
 			index = jumpSearch(&vaksin[0], count_vaksin_valid, search_str, category);
 			break;
 		case 2:
 			cout << "| Data yang ingin dicari> "; cin >> search_str;
-			shellSort(&vaksin[0], count_vaksin_valid);
+			sort_vaksin(category, 1, 1);
 			index = jumpSearch(&vaksin[0], count_vaksin_valid, search_str, category);
 			break;
 		case 3:
 			cout << "| Data yang ingin dicari> "; cin >> search_int;
-			shellSort(&vaksin[0], count_vaksin_valid);
+			sort_vaksin(category, 1, 1);
 			index = jumpSearch(&vaksin[0], count_vaksin_valid, search_int, category);
 			break;
 	}
@@ -767,7 +771,7 @@ void search_vaksin(int category, int method) {
 		cout << "========================================================================" << endl;
         cout << "| Sukses: Data Vaksin ditemukan!                                       |" << endl;
 		cout << "========================================================================" << endl;
-        cout << "| Vaksin ke-" << index << endl;
+        cout << "| Vaksin ke-" << index + 1 << endl;
         cout << "| Nama Vaksin : " << vaksin[index].nama << endl;
         cout << "| Produksi    : " << vaksin[index].produksi << endl;
         cout << "| Penggunaan  : " << vaksin[index].penggunaan << endl;
