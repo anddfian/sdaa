@@ -37,33 +37,73 @@ void show_vaksin(struct Node* n) {
 
 void add_vaksin(Node **head) {
 	system("cls");
+	int selected_menu;
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
+	cout << "| [1] Tambah diawal                                                    |" << endl;
+	cout << "| [2] Tambah diakhir                                                   |" << endl;
+    cout << "========================================================================" << endl;
+	cout << "| Pilih Menu> "; cin >> selected_menu;
 	Node *nodeBaru = new Node();
-	cout << "| Masukkan ID Vaksin         : "; cin >> nodeBaru->data.id;	
-	cin.ignore();
-	cout << "| Masukkan Nama Vaksin       : "; getline(cin, nodeBaru->data.nama);
-	cout << "| Masukkan Produksi Vaksin   : "; getline(cin, nodeBaru->data.produksi);
-	cout << "| Masukkan Penggunaan Vaksin : "; cin >> nodeBaru->data.penggunaan;
-	nodeBaru->next = NULL;
-	if(*head == NULL) {
-		*head = nodeBaru;
-	    cout << "========================================================================" << endl;
-	    cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
-	    cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;	
-		return;
-	}
 	Node *temp = *head;
-	while(temp->next != NULL) {
-		temp = temp->next;
+	switch(selected_menu) {
+		case 1:
+			system("cls");
+			cout << "========================================================================" << endl;
+		    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
+		    cout << "========================================================================" << endl;
+			cout << "| Masukkan ID Vaksin         : "; cin >> nodeBaru->data.id;
+			cin.ignore();
+			cout << "| Masukkan Nama Vaksin       : "; getline(cin, nodeBaru->data.nama);
+			cout << "| Masukkan Produksi Vaksin   : "; getline(cin, nodeBaru->data.produksi);
+			cout << "| Masukkan Penggunaan Vaksin : "; cin >> nodeBaru->data.penggunaan;
+			nodeBaru->next = *head;
+			if(*head == NULL) {
+				*head = nodeBaru;
+			    cout << "========================================================================" << endl;
+			    cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
+			    cout << "========================================================================" << endl;
+				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+				return;
+			}
+			*head = nodeBaru;
+			break;
+		case 2:
+			system("cls");
+			cout << "========================================================================" << endl;
+		    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
+		    cout << "========================================================================" << endl;
+			cout << "| Masukkan ID Vaksin         : "; cin >> nodeBaru->data.id;
+			cin.ignore();
+			cout << "| Masukkan Nama Vaksin       : "; getline(cin, nodeBaru->data.nama);
+			cout << "| Masukkan Produksi Vaksin   : "; getline(cin, nodeBaru->data.produksi);
+			cout << "| Masukkan Penggunaan Vaksin : "; cin >> nodeBaru->data.penggunaan;
+			nodeBaru->next = NULL;
+			if(*head == NULL) {
+				*head = nodeBaru;
+			    cout << "========================================================================" << endl;
+			    cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
+			    cout << "========================================================================" << endl;
+				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+				return;
+			}
+			while(temp->next != NULL) {
+				temp = temp->next;
+			}
+			temp->next = nodeBaru;
+			break;
+		default:
+			cout << "========================================================================" << endl;
+			cout << "| Error: Pilihan Salah!                                                |" << endl;
+			cout << "========================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			return;
 	}
-	temp->next = nodeBaru;
     cout << "========================================================================" << endl;
     cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
     cout << "========================================================================" << endl;
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;	
+	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 }
 
 void edit_vaksin(struct Node* n) {
@@ -114,6 +154,7 @@ void edit_vaksin(struct Node* n) {
 
 void delete_vaksin(Node **head) {
 	system("cls");
+	int selected_menu;
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
@@ -123,19 +164,44 @@ void delete_vaksin(Node **head) {
 		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 		return;
 	}
-	if((*head)->next == NULL) {
-		*head = NULL;
-		cout << "========================================================================" << endl;
-		cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
-		cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-		return;
-	}
+	cout << "| [1] Hapus diawal                                                     |" << endl;
+	cout << "| [2] Hapus diakhir                                                    |" << endl;
+    cout << "========================================================================" << endl;
+	cout << "| Pilih Menu> "; cin >> selected_menu;
 	Node *temp = *head;
-	while(temp->next->next != NULL) {
-		temp = temp->next;
+	switch(selected_menu) {
+		case 1:
+			if((*head)->next == NULL) {
+				*head = NULL;
+				cout << "========================================================================" << endl;
+				cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
+				cout << "========================================================================" << endl;
+				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+				return;
+			}
+			*head = temp->next;
+			break;
+		case 2:
+			if((*head)->next == NULL) {
+				*head = NULL;
+				cout << "========================================================================" << endl;
+				cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
+				cout << "========================================================================" << endl;
+				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+				return;
+			}
+			while(temp->next->next != NULL) {
+				temp = temp->next;
+			}
+			temp->next = NULL;
+			break;
+		default:
+			cout << "========================================================================" << endl;
+			cout << "| Error: Pilihan Salah!                                                |" << endl;
+			cout << "========================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			return;
 	}
-	temp->next = NULL;
 	cout << "========================================================================" << endl;
     cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
 	cout << "========================================================================" << endl;
@@ -148,26 +214,34 @@ void shellSort(Vaksin *vaksinp, int n, int category, int order) {
 			Vaksin temp = vaksinp[i];
 			int j;
 			if(category == 1 and order == 1) {
-				for (j = i; j >= gap && vaksinp[j - gap].nama > temp.nama; j -= gap)
+				for (j = i; j >= gap && vaksinp[j - gap].id > temp.id; j -= gap)
 					vaksinp[j] = vaksinp[j - gap];				
 			}
 			else if(category == 1 and order == 2) {
-				for (j = i; j >= gap && vaksinp[j - gap].nama < temp.nama; j -= gap)
+				for (j = i; j >= gap && vaksinp[j - gap].id < temp.id; j -= gap)
 					vaksinp[j] = vaksinp[j - gap];				
 			}
 			else if(category == 2 and order == 1) {
-				for (j = i; j >= gap && vaksinp[j - gap].produksi > temp.produksi; j -= gap)
+				for (j = i; j >= gap && vaksinp[j - gap].nama > temp.nama; j -= gap)
 					vaksinp[j] = vaksinp[j - gap];				
 			}
 			else if(category == 2 and order == 2) {
-				for (j = i; j >= gap && vaksinp[j - gap].produksi < temp.produksi; j -= gap)
+				for (j = i; j >= gap && vaksinp[j - gap].nama < temp.nama; j -= gap)
 					vaksinp[j] = vaksinp[j - gap];				
 			}
 			else if(category == 3 and order == 1) {
-				for (j = i; j >= gap && vaksinp[j - gap].penggunaan > temp.penggunaan; j -= gap)
+				for (j = i; j >= gap && vaksinp[j - gap].produksi > temp.produksi; j -= gap)
 					vaksinp[j] = vaksinp[j - gap];				
 			}
 			else if(category == 3 and order == 2) {
+				for (j = i; j >= gap && vaksinp[j - gap].produksi < temp.produksi; j -= gap)
+					vaksinp[j] = vaksinp[j - gap];				
+			}
+			else if(category == 4 and order == 1) {
+				for (j = i; j >= gap && vaksinp[j - gap].penggunaan > temp.penggunaan; j -= gap)
+					vaksinp[j] = vaksinp[j - gap];				
+			}
+			else if(category == 4 and order == 2) {
 				for (j = i; j >= gap && vaksinp[j - gap].penggunaan < temp.penggunaan; j -= gap)
 					vaksinp[j] = vaksinp[j - gap];				
 			}
@@ -198,7 +272,23 @@ void sort_vaksin(struct Node* n) {
 	    n = n->next;
 	    i++;
 	}
-	shellSort(&vaksin[0], i, 1, 1);
+	int selected_menu;
+	cout << "| [1] ID Vaksin                                                        |" << endl;
+	cout << "| [2] Nama Vaksin                                                      |" << endl;
+	cout << "| [3] Produksi Vaksin                                                  |" << endl;
+	cout << "| [4] Penggunaan Vaksin                                                |" << endl;
+	cout << "========================================================================" << endl;
+	cout << "| Pilih Menu> "; cin >> selected_menu;
+	int selected_order;
+	system("cls");
+	cout << "========================================================================" << endl;
+    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
+    cout << "========================================================================" << endl;
+	cout << "| [1] Ascending                                                        |" << endl;
+	cout << "| [2] Descending                                                       |" << endl;
+	cout << "========================================================================" << endl;
+	cout << "| Pilih Menu> "; cin >> selected_order;	
+	shellSort(&vaksin[0], i, selected_menu, selected_order);
 	i = 0;
 	while(temp != NULL) {
 		temp->data.id = vaksin[i].id;
@@ -208,6 +298,7 @@ void sort_vaksin(struct Node* n) {
 		temp = temp->next;
 		i++;
 	}
+	cout << "========================================================================" << endl;
     cout << "| Sukses: Data Vaksin berhasil diurutkan                               |" << endl;
 	cout << "========================================================================" << endl;
 	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
@@ -217,6 +308,20 @@ int jumpSearch(Vaksin *vaksinp, int n, string x, int category) {
 	int step = sqrt(n);
 	int prev = 0;
 	if(category == 1) {
+		while(vaksinp[min(step, n)-1].id < x) {
+			prev = step;
+			step += sqrt(n);
+			if(prev >= n)
+				return -1;
+		}
+		while(vaksinp[prev].id < x) {
+			prev++;
+			if(prev == min(step, n))
+				return -1;
+		}
+		if(vaksinp[prev].id == x)
+			return prev;
+	} else if(category == 2) {
 		while(vaksinp[min(step, n)-1].nama < x) {
 			prev = step;
 			step += sqrt(n);
@@ -230,7 +335,7 @@ int jumpSearch(Vaksin *vaksinp, int n, string x, int category) {
 		}
 		if(vaksinp[prev].nama == x)
 			return prev;
-	} else if(category == 2) {
+	} else if(category == 3) {
 		while(vaksinp[min(step, n)-1].produksi < x) {
 			prev = step;
 			step += sqrt(n);
@@ -251,7 +356,7 @@ int jumpSearch(Vaksin *vaksinp, int n, string x, int category) {
 int jumpSearch(Vaksin *vaksinp, int n, int x, int category) {
 	int step = sqrt(n);
 	int prev = 0;
-	if(category == 3) {
+	if(category == 4) {
 		while(vaksinp[min(step, n)-1].penggunaan < x) {
 			prev = step;
 			step += sqrt(n);
@@ -291,7 +396,14 @@ void search_vaksin(struct Node* n) {
 	    n = n->next;
 	    i++;
 	}
-	shellSort(&vaksin[0], i, 1, 1);
+	int selected_menu;
+	cout << "| [1] ID Vaksin                                                        |" << endl;
+	cout << "| [2] Nama Vaksin                                                      |" << endl;
+	cout << "| [3] Produksi Vaksin                                                  |" << endl;
+	cout << "| [4] Penggunaan Vaksin                                                |" << endl;
+	cout << "========================================================================" << endl;
+	cout << "| Pilih Menu> "; cin >> selected_menu;
+	shellSort(&vaksin[0], i, selected_menu, 1);
 	i = 0;
 	while(temp != NULL) {
 		temp->data.id = vaksin[i].id;
@@ -302,8 +414,17 @@ void search_vaksin(struct Node* n) {
 		i++;
 	}
 	string search_str;
-	cout << "| Data yang ingin dicari> "; cin >> search_str;
-	int index = jumpSearch(&vaksin[0], i, search_str, 1);
+	int search_int;
+	int index;
+	if(selected_menu == 1 or selected_menu == 2 or selected_menu == 3) {
+		cout << "========================================================================" << endl;
+		cout << "| Data yang ingin dicari> "; cin >> search_str;
+		index = jumpSearch(&vaksin[0], i, search_str, selected_menu);
+	} else {
+		cout << "========================================================================" << endl;
+		cout << "| Data yang ingin dicari> "; cin >> search_int;
+		index = jumpSearch(&vaksin[0], i, search_int, selected_menu);		
+	}
 	if(index != -1) {
 		cout << "========================================================================" << endl;
 	    cout << "| Sukses: Data Vaksin ditemukan!                                       |" << endl;
