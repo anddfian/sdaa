@@ -1,565 +1,148 @@
 #include<iostream>
 #include<conio.h>
-#include<stdlib.h>
 #include<bits/stdc++.h>
 using namespace std;
 
-const int MAKS_VAKSIN = 100, MAKS_VAKSINASI = 100, MAKS_ACCOUNT = 100, MAKS_DIVAKSIN = 2;
-
 struct Vaksin {
-	string nama, produksi;
+	string id, nama, produksi;
 	int penggunaan;
 };
 
-Vaksin vaksin[MAKS_VAKSIN];
-
-struct Vaksinasi {
-	string nama, tanggal, alamat, tekanan[MAKS_DIVAKSIN], vaksin[MAKS_DIVAKSIN], kipi[MAKS_DIVAKSIN];
-	int jumlah, batch[MAKS_DIVAKSIN];
-	long long nik, hp;
-	float suhu[MAKS_DIVAKSIN];
+struct Node {
+	Vaksin data;
+	struct Node* next;
 };
 
-Vaksinasi vaksinasi[MAKS_VAKSINASI];
-
-struct Account {
-	string username;
-	string password;
-};
-
-Account account[MAKS_ACCOUNT];
-
-void final_vaksinasi(int index, int tahap); void proses_vaksinasi_keempat(int index, int tahap); void proses_vaksinasi_ketiga(int index, int tahap); void proses_vaksinasi_kedua(int index, int tahap);
-void proses_vaksinasi_pertama(); void show_menu_vaksinasi(); void show_menu_vaksin(); void auth_register(); void auth_login(); void show_menu(); void show_vaksin(Vaksin *vaksin);
-void back_to_show_menu(); void add_vaksin(Vaksin *vaksin); void edit_vaksin(Vaksin *vaksin); void delete_vaksin(Vaksin *vaksin); void close_app(); void about_app();
-int insert_meja_pertama(long long nik, string nama, string tanggal_lahir, long long no_hp, string alamat); bool insert_meja_keempat(int index, int tahap, string kipi);
-bool insert_meja_ketiga(int index, int tahap, int nomor_vaksin, int nomor_batch_vaksin); bool insert_meja_kedua(int index, int tahap, float suhu_tubuh, string tekanan_darah);
-void show_statistik_vaksinasi(); void show_vaksinasi(); int check_meja_pertama(long long nik); void sort_vaksin_menu(); void sort_vaksin_method(int category);
-void sort_vaksin_order(int category, int method); void sort_vaksin(int category, int method, int order); void search_vaksin_menu(); void search_vaksin_method(int category);
-void search_vaksin(int category, int method); int jumpSearch(Vaksin *vaksinp, int n, string x, int category); int jumpSearch(Vaksin *vaksinp, int n, int x, int category);
-
-void show_auth() {
-	system("cls");
-	int selected_auth;
-	cout << "========================================================================" << endl;
-    cout << "|                            SELAMAT DATANG                            |" << endl;
-    cout << "|                                  DI                                  |" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-    cout << "|                                 OLEH                                 |" << endl;
-    cout << "|         ANDI ALFIAN BAHTIAR - 2009106002 - INFORMATIKA A 2020        |" << endl;
-	cout << "========================================================================" << endl;
-    cout << "| [1] Daftar Akun                                                      |" << endl;
-    cout << "| [2] Masuk Akun                                                       |" << endl;
-    cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-	cout << "========================================================================" << endl;
-    cout << "| Masukkan Pilihan> "; cin >> selected_auth;
-	switch(selected_auth) {
-		case 1:
-			auth_register();
-			break;
-		case 2:
-			auth_login();
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-			cout << "| Error: Pilihan salah!                                                |" << endl;
-			cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_auth();			
-	}
-}
-
-void auth_register() {
+void show_vaksin(struct Node* n) {
 	system("cls");
 	cout << "========================================================================" << endl;
-    cout << "|                              DAFTAR AKUN                             |" << endl;
-	cout << "========================================================================" << endl;
-	string username, password;
-	cin.ignore();
-	cout << "| Username : "; getline(cin, username); 
-	cout << "| Password : "; getline(cin, password);
-	int status = -1, index;
-	for(int i = 0; i < MAKS_ACCOUNT; i++) {
-		if(account[i].username == username) {
-			status = 1;
-			break;
-		}
-	}
-	if(status == -1) {
-		for(int i = 0; i < MAKS_ACCOUNT; i++) {
-			if(account[i].username == "") {
-				index = i;
-				break;
-			}
-		}
-		account[index].username = username;
-		account[index].password = password;
-        cout << "========================================================================" << endl;
-        cout << "| Sukses: Akun berhasil dibuat dan disimpan!                           |" << endl;
-        cout << "========================================================================" << endl;
-	} else {		
+    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
+    cout << "========================================================================" << endl;
+	if(n == NULL) {
+	    cout << "| Error: Data Vaksin kosong                                            |" << endl;
 		cout << "========================================================================" << endl;
-        cout << "| Error: Akun tersebut telah didaftarkan!                              |" << endl;
-        cout << "========================================================================" << endl;
+		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+		return;
 	}
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_auth();
-}
-
-void auth_login() {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                                 LOGIN                                |" << endl;
-	cout << "========================================================================" << endl;
-    string username, password;
-    cin.ignore();
-    cout << "| Username : "; getline(cin, username);
-    cout << "| Password : "; getline(cin, password);
-	int status;
-    for(int i = 0; i < MAKS_ACCOUNT; i++) {
-		if(account[i].username == username) {
-			if(account[i].password == password) {
-				status = 3;
-				break;
-			} else {
-				status = 2;
-				break;
-			}
-		} else {
-			status = 1;
-			continue;
-		}
-	}
-	switch(status) {
-		case 1:
-			cout << "========================================================================" << endl;
-            cout << "| Error: Username tidak ditemukan!                                     |" << endl;
-            cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_auth();
-			break;
-		case 2:
-            cout << "========================================================================" << endl;
-            cout << "| Error: Password salah!                                               |" << endl;
-            cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_auth();
-			break;
-		case 3:
-			show_menu();
-			break;
-	}
-}
-
-void show_menu() {
-	system("cls");
-	int selected_menu;
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-    cout << "========================================================================" << endl;
-    cout << "| [1] Data Vaksin COVID-19                                             |" << endl;
-    cout << "| [2] Data Vaksinasi COVID-19                                          |" << endl;
-    cout << "| [3] Proses Vaksin COVID-19                                           |" << endl;
-    cout << "| [4] Tentang Aplikasi                                                 |" << endl;
-    cout << "| [5] Logout                                                           |" << endl;
-    cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "Pilih Menu> "; cin >> selected_menu;
-	switch(selected_menu) {
-		case 1:
-			show_menu_vaksin();
-			break;
-		case 2:
-			show_menu_vaksinasi();
-			break;
-		case 3:
-			proses_vaksinasi_pertama();
-			break;
-		case 4:
-			about_app();
-			break;
-		case 5:
-			show_auth();
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-        	cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_menu();
-	}
-}
-
-void show_menu_vaksin() {
-	system("cls");
-	int selected_menu;
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-    cout << "========================================================================" << endl;
-    cout << "| [1] Lihat Data Vaksin COVID-19                                       |" << endl;
-    cout << "| [2] Tambah Data Vaksin COVID-19                                      |" << endl;
-    cout << "| [3] Ubah Data Vaksin COVID-19                                        |" << endl;
-    cout << "| [4] Hapus Data Vaksin COVID-19                                       |" << endl;
-    cout << "| [5] Urut Data Vaksin COVID-19                                        |" << endl;
-    cout << "| [6] Cari Data Vaksin COVID-19                                        |" << endl;
-    cout << "| [7] Kembali                                                          |" << endl;
-    cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "Pilih Menu> "; cin >> selected_menu;
-	switch(selected_menu) {
-		case 1:
-			show_vaksin(&vaksin[0]);
-			break;
-		case 2:
-			add_vaksin(&vaksin[0]);
-			break;
-		case 3:
-			edit_vaksin(&vaksin[0]);
-			break;
-		case 4:
-			delete_vaksin(&vaksin[0]);
-			break;
-		case 5:
-			sort_vaksin_menu();
-			break;
-		case 6:
-			search_vaksin_menu();
-			break;
-		case 7:
-			show_menu();
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-        	cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_menu_vaksin();
-	}
-}
-
-void show_menu_vaksinasi() {
-	system("cls");
-	int selected_menu;
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-    cout << "========================================================================" << endl;
-    cout << "| [1] Lihat Statistik Vaksinasi COVID-19                               |" << endl;
-    cout << "| [2] Lihat Data Vaksinasi COVID-19                                    |" << endl;
-    cout << "| [3] Kembali                                                          |" << endl;
-    cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "Pilih Menu> "; cin >> selected_menu;
-	switch(selected_menu) {
-		case 1:
-			show_statistik_vaksinasi();
-			break;
-		case 2:
-			show_vaksinasi();
-			break;
-		case 3:
-			show_menu();
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-        	cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_menu_vaksinasi();
-	}
-}
-
-string get_time() {
-	time_t now = time(0);
-	char* dt = ctime(&now);
-	return dt;
-}
-
-void show_statistik_vaksinasi() {
-	system("cls");
-	int selected_menu;
-	cout << "========================================================================" << endl;
-    cout << "|                        DATA VAKSINASI COVID-19                       |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "| Tanggal          : " << get_time();
-	int count_vaksinasi = 0;
-	for(int i = 0; i < MAKS_VAKSINASI; i++) {
-		if(vaksinasi[i].nama != "" && vaksinasi[i].jumlah > 0) {
-			count_vaksinasi += vaksinasi[i].jumlah;
-		}
-	}
-    cout << "| Jumlah Vaksinasi : " << count_vaksinasi << endl;
-    cout << "========================================================================" << endl;
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu_vaksinasi();
-}
-
-void show_vaksinasi() {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                        DATA VAKSINASI COVID-19                       |" << endl;
-    cout << "========================================================================" << endl;
-	for(int i = 0; i < MAKS_VAKSINASI; i++) {
-		if(vaksinasi[i].nama == "") {
-			continue;
-		} else {
-			cout << "| Vaksinasi ke-" << i + 1 << endl;
-			cout << "| Nama               : " << vaksinasi[i].nama << endl;
-			cout << "| NIK                : " << vaksinasi[i].nik << endl;
-			cout << "| Tanggal Lahir      : " << vaksinasi[i].tanggal << endl;
-			cout << "| No HP              : " << vaksinasi[i].hp << endl;
-			cout << "| Alamat             : " << vaksinasi[i].alamat << endl;
-			for(int j = 0; j < MAKS_DIVAKSIN; j++) {
-				if(vaksinasi[i].vaksin[j] == "") {
-					continue;
-				} else {
-					cout << "| Vaksin ke          : " << j + 1 << endl;
-					cout << "| Suhu Tubuh         : " << vaksinasi[i].suhu[j] << endl;
-					cout << "| Tekanan Darah      : " << vaksinasi[i].tekanan[j] << endl;
-					cout << "| Nama Vaksin        : " << vaksinasi[i].vaksin[j] << endl;
-					cout << "| Nomor Batch Vaksin : " << vaksinasi[i].batch[j] << endl;
-					cout << "| KIPI               : " << vaksinasi[i].kipi[j] << endl;
-				}
-			}
-		    cout << "========================================================================" << endl;
-		}
-	}
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu_vaksinasi();
-}
-
-void show_vaksin(Vaksin *vaksinp) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
-    cout << "========================================================================" << endl;
-	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksinp->nama == "") {
-			continue;
-		} else {
-			cout << "| Vaksin ke-" << i + 1 << endl;
-			cout << "| Nama Vaksin : " << vaksinp->nama << endl;
-			cout << "| Produksi    : " << vaksinp->produksi << endl;
-			cout << "| Penggunaan  : " << vaksinp->penggunaan << endl;
-		    cout << "========================================================================" << endl;
-		}
-		vaksinp++;
-	}
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu_vaksin();
-}
-
-void add_vaksin(Vaksin *vaksinp) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
-    cout << "========================================================================" << endl;
-	int index = -1;
-	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksinp->nama == "") {
-			index = i;
-			break;
-		}
-		vaksinp++;
-	}
-	if(index != -1) {
-		cin.ignore();
-		cout << "| Masukkan Nama Vaksin     : "; getline(cin, vaksinp->nama);
-		cout << "| Masukkan Produksi Vaksin : "; getline(cin, vaksinp->produksi);
-		vaksin[index].penggunaan = 0;
+	while(n != NULL) {
+		cout << "| ID Vaksin   : " << n->data.id << endl;
+		cout << "| Nama Vaksin : " << n->data.nama << endl;
+		cout << "| Produksi    : " << n->data.produksi << endl;
+		cout << "| Penggunaan  : " << n->data.penggunaan << endl;
 	    cout << "========================================================================" << endl;
-        cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
-	    cout << "========================================================================" << endl;
+	    n = n->next;
 	}
 	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu_vaksin();
 }
 
-void edit_vaksin(Vaksin *vaksinp) {
+void add_vaksin(Node **head) {
 	system("cls");
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
-	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksinp->nama == "") {
-			continue;
-		} else {
-			cout << "| Vaksin ke-" << i+1 << endl;
-			cout << "| Nama Vaksin : " << vaksinp->nama << endl;
-			cout << "| Produksi    : " << vaksinp->produksi << endl;
-			cout << "| Penggunaan  : " << vaksinp->penggunaan << endl;
-		    cout << "========================================================================" << endl;
-		}
-		vaksinp++;
-	}
-	int nomor;
-	string nama, produksi;
-	cout << "| Masukkan Nomor Vaksin    : "; cin >> nomor;
+	Node *nodeBaru = new Node();
+	cout << "| Masukkan ID Vaksin         : "; cin >> nodeBaru->data.id;	
 	cin.ignore();
-	cout << "| Masukkan Nama Vaksin     : "; getline(cin, nama);
-	cout << "| Masukkan Produksi Vaksin : "; getline(cin, produksi);
-	vaksin[nomor-1].nama = nama;
-	vaksin[nomor-1].produksi = produksi;
+	cout << "| Masukkan Nama Vaksin       : "; getline(cin, nodeBaru->data.nama);
+	cout << "| Masukkan Produksi Vaksin   : "; getline(cin, nodeBaru->data.produksi);
+	cout << "| Masukkan Penggunaan Vaksin : "; cin >> nodeBaru->data.penggunaan;
+	nodeBaru->next = NULL;
+	if(*head == NULL) {
+		*head = nodeBaru;
+	    cout << "========================================================================" << endl;
+	    cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
+	    cout << "========================================================================" << endl;
+		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;	
+		return;
+	}
+	Node *temp = *head;
+	while(temp->next != NULL) {
+		temp = temp->next;
+	}
+	temp->next = nodeBaru;
     cout << "========================================================================" << endl;
-    cout << "| Sukses: Data Vaksin berhasil diperbaharui                            |" << endl;
+    cout << "| Sukses: Data Vaksin berhasil ditambahkan                             |" << endl;
     cout << "========================================================================" << endl;
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu_vaksin();
+	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;	
 }
 
-void delete_vaksin(Vaksin *vaksinp) {
+void edit_vaksin(struct Node* n) {
 	system("cls");
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
-	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksinp->nama == "") {
-			continue;
-		} else {
-			cout << "| Vaksin ke-" << i+1 << endl;
-			cout << "| Nama Vaksin : " << vaksinp->nama << endl;
-			cout << "| Produksi    : " << vaksinp->produksi << endl;
-			cout << "| Penggunaan  : " << vaksinp->penggunaan << endl;
-		    cout << "========================================================================" << endl;
-		}
-		vaksinp++;
+	Node *temp = n;
+	if(n == NULL) {
+	    cout << "| Error: Data Vaksin kosong                                            |" << endl;
+		cout << "========================================================================" << endl;
+		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+		return;
 	}
-	int nomor;
-	cout << "| Masukkan Nomor Vaksin : "; cin >> nomor;
-	vaksin[nomor - 1].nama = "";
-	vaksin[nomor - 1].produksi = "";
-	vaksin[nomor - 1].penggunaan = 0;
+	while(n != NULL) {
+		cout << "| ID Vaksin   : " << n->data.id << endl;
+		cout << "| Nama Vaksin : " << n->data.nama << endl;
+		cout << "| Produksi    : " << n->data.produksi << endl;
+		cout << "| Penggunaan  : " << n->data.penggunaan << endl;
+	    cout << "========================================================================" << endl;
+	    n = n->next;
+	}
+	string id, nama, produksi;
+	int penggunaan;
+	cout << "| Masukkan ID Vaksin         : "; cin >> id;
+	cin.ignore();
+	cout << "| Masukkan Nama Vaksin       : "; getline(cin, nama);
+	cout << "| Masukkan Produksi Vaksin   : "; getline(cin, produksi);
+	cout << "| Masukkan Penggunaan Vaksin : "; cin >> penggunaan;
+	while(temp != NULL) {
+		if(temp->data.id == id) {
+			temp->data.nama = nama;
+			temp->data.produksi = produksi;
+			temp->data.penggunaan = penggunaan;
+		    cout << "========================================================================" << endl;
+		    cout << "| Sukses: Data Vaksin berhasil diperbaharui                            |" << endl;
+		    cout << "========================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			return;
+		}
+		temp = temp->next;
+	}
+    cout << "========================================================================" << endl;
+    cout << "| Error: Data Vaksin gagal diperbaharui                                |" << endl;
+    cout << "========================================================================" << endl;
+	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+}
+
+void delete_vaksin(Node **head) {
+	system("cls");
+	cout << "========================================================================" << endl;
+    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
+    cout << "========================================================================" << endl;
+	if(*head == NULL) {
+	    cout << "| Error: Data Vaksin kosong                                            |" << endl;
+		cout << "========================================================================" << endl;
+		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+		return;
+	}
+	if((*head)->next == NULL) {
+		*head = NULL;
+		cout << "========================================================================" << endl;
+		cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
+		cout << "========================================================================" << endl;
+		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+		return;
+	}
+	Node *temp = *head;
+	while(temp->next->next != NULL) {
+		temp = temp->next;
+	}
+	temp->next = NULL;
 	cout << "========================================================================" << endl;
     cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
 	cout << "========================================================================" << endl;
 	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu_vaksin();
 }
 
-void sort_vaksin_menu() {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "| [1] Nama Vaksin                                                      |" << endl;
-	cout << "| [2] Produksi                                                         |" << endl;
-	cout << "| [3] Penggunaan                                                       |" << endl;
-	cout << "| [4] Kembali                                                          |" << endl;
-	cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-    cout << "========================================================================" << endl;
-	int selected_menu;
-	cout << "| Pilih Menu> "; cin >> selected_menu;
-	switch(selected_menu) {
-		case 1:
-			sort_vaksin_method(selected_menu);
-			break;
-		case 2:
-			sort_vaksin_method(selected_menu);
-			break;
-		case 3:
-			sort_vaksin_method(selected_menu);
-			break;
-		case 4:
-			show_menu_vaksin();
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-        	cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			sort_vaksin_menu();
-	}
-}
-
-void sort_vaksin_method(int category) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "| [1] Shell Sort                                                       |" << endl;
-	cout << "| [2] Kembali                                                          |" << endl;
-	cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-    cout << "========================================================================" << endl;
-	int selected_menu;
-	cout << "| Pilih Menu> "; cin >> selected_menu;
-	switch(selected_menu) {
-		case 1:
-			sort_vaksin_order(category, selected_menu);
-			break;
-		case 2:
-			sort_vaksin_menu();
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-        	cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			sort_vaksin_method(category);
-	}
-}
-
-void sort_vaksin_order(int category, int method) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "| [1] Ascending                                                        |" << endl;
-	cout << "| [2] Descending                                                       |" << endl;
-	cout << "| [3] Kembali                                                          |" << endl;
-	cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-    cout << "========================================================================" << endl;
-	int selected_menu;
-	cout << "| Pilih Menu> "; cin >> selected_menu;
-	switch(selected_menu) {
-		case 1:
-			sort_vaksin(category, method, selected_menu);
-			cout << "========================================================================" << endl;
-	        cout << "| Sukses: Data Vaksin berhasil diurutkan!                              |" << endl;
-		    cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_menu();
-			break;
-		case 2:
-			sort_vaksin(category, method, selected_menu);
-			cout << "========================================================================" << endl;
-	        cout << "| Sukses: Data Vaksin berhasil diurutkan!                              |" << endl;
-		    cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_menu();
-			break;
-		case 3:
-			sort_vaksin_method(category);
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-        	cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			sort_vaksin_order(category, method);
-	}
-}
-
-int shellSort(Vaksin *vaksinp, int n, int category, int order) {
+void shellSort(Vaksin *vaksinp, int n, int category, int order) {
 	for(int gap = n / 2; gap > 0; gap /= 2) {
 		for(int i = gap; i < n; i += 1) {
 			Vaksin temp = vaksinp[i];
@@ -591,121 +174,43 @@ int shellSort(Vaksin *vaksinp, int n, int category, int order) {
 			vaksinp[j] = temp;
 		}
 	}
-	return 0;
 }
 
-void sort_vaksin(int category, int method, int order) {
-	int count_vaksin_valid;
-	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksin[i].nama == "") {
-			continue;
-		} else {
-			count_vaksin_valid++;
-		}
-	}
-	switch(method) {
-		case 1:
-			shellSort(&vaksin[0], count_vaksin_valid, category, order);
-			break;
-	}
-}
-
-void search_vaksin_menu() {
+void sort_vaksin(struct Node* n) {
 	system("cls");
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
-	cout << "| [1] Nama Vaksin                                                      |" << endl;
-	cout << "| [2] Produksi                                                         |" << endl;
-	cout << "| [3] Penggunaan                                                       |" << endl;
-	cout << "| [4] Kembali                                                          |" << endl;
-	cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-    cout << "========================================================================" << endl;
-	int selected_menu;
-	cout << "| Pilih Menu> "; cin >> selected_menu;
-	switch(selected_menu) {
-		case 1:
-			search_vaksin_method(selected_menu);
-			break;
-		case 2:
-			search_vaksin_method(selected_menu);
-			break;
-		case 3:
-			search_vaksin_method(selected_menu);
-			break;
-		case 4:
-			show_menu_vaksin();
-			break;
-		case 0:
-			close_app();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-        	cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			search_vaksin_menu();
+	Node *temp = n;
+	Vaksin vaksin[100];
+	if(n == NULL) {
+	    cout << "| Error: Data Vaksin kosong                                            |" << endl;
+		cout << "========================================================================" << endl;
+		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+		return;
 	}
-}
-
-void search_vaksin_method(int category) {
-	system("cls");
+	int i;
+	while(n != NULL) {
+	    vaksin[i].id = n->data.id;
+	    vaksin[i].nama = n->data.nama;
+	    vaksin[i].produksi = n->data.produksi;
+	    vaksin[i].penggunaan = n->data.penggunaan;
+	    n = n->next;
+	    i++;
+	}
+	shellSort(&vaksin[0], i, 1, 1);
+	i = 0;
+	while(temp != NULL) {
+		temp->data.id = vaksin[i].id;
+		temp->data.nama = vaksin[i].nama;
+		temp->data.produksi = vaksin[i].produksi;
+		temp->data.penggunaan = vaksin[i].penggunaan;
+		temp = temp->next;
+		i++;
+	}
+    cout << "| Sukses: Data Vaksin berhasil diurutkan                               |" << endl;
 	cout << "========================================================================" << endl;
-    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
-    cout << "========================================================================" << endl;
-	if(category == 1 or category == 2) {
-		cout << "| [1] Jump Search                                                      |" << endl;
-		cout << "| [2] Kembali                                                          |" << endl;
-		cout << "| [0] Keluar Aplikasi                                                  |" << endl;		
-	} else {
-		cout << "| [1] Jump Search                                                      |" << endl;
-		cout << "| [2] Fibonacci Search                                                 |" << endl;
-		cout << "| [3] Kembali                                                          |" << endl;
-		cout << "| [0] Keluar Aplikasi                                                  |" << endl;
-	}
-    cout << "========================================================================" << endl;
-	int selected_menu;
-	cout << "| Pilih Menu> "; cin >> selected_menu;
-	if(category == 1 or category == 2) {
-		switch(selected_menu) {
-			case 1:
-				search_vaksin(category, selected_menu);
-				break;
-			case 2:
-				search_vaksin_menu();
-				break;
-			case 0:
-				close_app();
-				break;
-			default:
-				cout << "========================================================================" << endl;
-		    	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-		    	cout << "========================================================================" << endl;
-				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-				search_vaksin_method(category);
-		}
-	} else {
-		switch(selected_menu) {
-			case 1:
-				search_vaksin(category, selected_menu);
-				break;
-			case 2:
-				search_vaksin(category, selected_menu);
-				break;
-			case 3:
-				search_vaksin_menu();
-				break;
-			case 0:
-				close_app();
-				break;
-			default:
-				cout << "========================================================================" << endl;
-	        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
-	        	cout << "========================================================================" << endl;
-				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-				search_vaksin_method(category);
-		}
-	}
+	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 }
 
 int jumpSearch(Vaksin *vaksinp, int n, string x, int category) {
@@ -743,43 +248,6 @@ int jumpSearch(Vaksin *vaksinp, int n, string x, int category) {
 	return -1;
 }
 
-int min(int x, int y) { return (x <= y) ? x : y; }
-
-int fibMonaccianSearch(Vaksin *vaksinp, int n, int x) {
-	int fibMMm2 = 0;
-	int fibMMm1 = 1;
-	int fibM = fibMMm2 + fibMMm1;
-
-	while(fibM < n) {
-		fibMMm2 = fibMMm1;
-		fibMMm1 = fibM;
-		fibM = fibMMm2 + fibMMm1;
-	}
-
-	int offset = -1;
-
-	while(fibM > 1) {
-		int i = min(offset + fibMMm2, n - 1);
-
-		if(vaksinp[i].penggunaan < x) {
-			fibM = fibMMm1;
-			fibMMm1 = fibMMm2;
-			fibMMm2 = fibM - fibMMm1;
-			offset = i;
-		} else if(vaksinp[i].penggunaan > x) {
-			fibM = fibMMm2;
-			fibMMm1 = fibMMm1 - fibMMm2;
-			fibMMm2 = fibM - fibMMm1;
-		} else
-			return i;
-	}
-
-	if(fibMMm1 && vaksinp[offset + 1].penggunaan == x)
-		return offset + 1;
-
-	return -1;
-}
-
 int jumpSearch(Vaksin *vaksinp, int n, int x, int category) {
 	int step = sqrt(n);
 	int prev = 0;
@@ -801,56 +269,49 @@ int jumpSearch(Vaksin *vaksinp, int n, int x, int category) {
 	return -1;
 }
 
-void search_vaksin(int category, int method) {
+void search_vaksin(struct Node* n) {
 	system("cls");
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
-	int count_vaksin_valid;
-	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksin[i].nama == "") {
-			continue;
-		} else {
-			count_vaksin_valid++;
-		}
+	Node *temp = n;
+	Vaksin vaksin[100];
+	if(n == NULL) {
+	    cout << "| Error: Data Vaksin kosong                                            |" << endl;
+		cout << "========================================================================" << endl;
+		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+		return;
 	}
-	int search_int;
+	int i;
+	while(n != NULL) {
+	    vaksin[i].id = n->data.id;
+	    vaksin[i].nama = n->data.nama;
+	    vaksin[i].produksi = n->data.produksi;
+	    vaksin[i].penggunaan = n->data.penggunaan;
+	    n = n->next;
+	    i++;
+	}
+	shellSort(&vaksin[0], i, 1, 1);
+	i = 0;
+	while(temp != NULL) {
+		temp->data.id = vaksin[i].id;
+		temp->data.nama = vaksin[i].nama;
+		temp->data.produksi = vaksin[i].produksi;
+		temp->data.penggunaan = vaksin[i].penggunaan;
+		temp = temp->next;
+		i++;
+	}
 	string search_str;
-	int index;
-	switch(method) {
-		case 1:
-			switch(category) {
-				case 1:
-					cout << "| Data yang ingin dicari> "; cin >> search_str;
-					sort_vaksin(category, 1, 1);
-					index = jumpSearch(&vaksin[0], count_vaksin_valid, search_str, category);
-					break;
-				case 2:
-					cout << "| Data yang ingin dicari> "; cin >> search_str;
-					sort_vaksin(category, 2, 1);
-					index = jumpSearch(&vaksin[0], count_vaksin_valid, search_str, category);
-					break;
-				case 3:
-					cout << "| Data yang ingin dicari> "; cin >> search_int;
-					sort_vaksin(category, 3, 1);
-					index = jumpSearch(&vaksin[0], count_vaksin_valid, search_int, category);
-					break;
-			}
-			break;
-		case 2:
-			cout << "| Data yang ingin dicari> "; cin >> search_int;
-			sort_vaksin(category, 3, 1);
-			index = fibMonaccianSearch(&vaksin[0], count_vaksin_valid, search_int);
-			break;
-	}
-	if(index != -1) {		
+	cout << "| Data yang ingin dicari> "; cin >> search_str;
+	int index = jumpSearch(&vaksin[0], i, search_str, 1);
+	if(index != -1) {
 		cout << "========================================================================" << endl;
-        cout << "| Sukses: Data Vaksin ditemukan!                                       |" << endl;
+	    cout << "| Sukses: Data Vaksin ditemukan!                                       |" << endl;
 		cout << "========================================================================" << endl;
-        cout << "| Vaksin ke-" << index + 1 << endl;
-        cout << "| Nama Vaksin : " << vaksin[index].nama << endl;
-        cout << "| Produksi    : " << vaksin[index].produksi << endl;
-        cout << "| Penggunaan  : " << vaksin[index].penggunaan << endl;
+	    cout << "| ID Vaksin   : " << vaksin[index].id << endl;
+	    cout << "| Nama Vaksin : " << vaksin[index].nama << endl;
+	    cout << "| Produksi    : " << vaksin[index].produksi << endl;
+	    cout << "| Penggunaan  : " << vaksin[index].penggunaan << endl;
 		cout << "========================================================================" << endl;		
 	} else {
 		cout << "========================================================================" << endl;		
@@ -858,238 +319,6 @@ void search_vaksin(int category, int method) {
 		cout << "========================================================================" << endl;
 	}
 	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu();
-}
-
-void proses_vaksinasi_pertama() {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-	cout << "========================================================================" << endl;
-    cout << "|                             MEJA PERTAMA                             |" << endl;
-	cout << "========================================================================" << endl;
-	string nama, tanggal_lahir, alamat;
-	long long nik, no_hp;
-	cout << "| Masukkan NIK           : "; cin >> nik;
-	int status_nik = check_meja_pertama(nik);
-	if(status_nik == -1) {
-		cin.ignore();
-		cout << "| Masukkan Nama          : "; getline(cin, nama);
-		cout << "| Masukkan Tanggal Lahir : "; getline(cin, tanggal_lahir);
-		cout << "| Masukkan No. HP        : "; cin >> no_hp;
-		cin.ignore();
-		cout << "| Masukkan Alamat        : "; getline(cin, alamat);
-		status_nik = insert_meja_pertama(nik, nama, tanggal_lahir, no_hp, alamat);
-	}
-	switch(vaksinasi[status_nik].jumlah) {
-		case 0: 1;
-			cout << "========================================================================" << endl;
-		    cout << "| Sukses: Meja pertama selesai                                         |" << endl;
-			cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk melanjutkan..."; getch(); cout << endl;
-			proses_vaksinasi_kedua(status_nik, vaksinasi[status_nik].jumlah);
-			break;
-		case 2:
-			cout << "========================================================================" << endl;
-		    cout << "| Error: Telah 2x mengikuti vaksinasi                                  |" << endl;
-			cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_menu();
-			break;
-		default:
-			cout << "========================================================================" << endl;
-		    cout << "| Error: Mungkin terjadi kesalahan!                                    |" << endl;
-			cout << "========================================================================" << endl;
-			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-			show_menu();
-	}
-}
-
-int check_meja_pertama(long long nik) {
-	int index = -1;
-	for(int i = 0; i < MAKS_VAKSINASI; i++) {
-		if(vaksinasi[i].nik == nik) {
-			index = i;
-		}
-	}
-	return index;
-}
-
-int insert_meja_pertama(long long nik, string nama, string tanggal_lahir, long long no_hp, string alamat) {
-	int index;
-	for(int i = 0; i < MAKS_VAKSINASI; i++) {
-		if(vaksinasi[i].nik == 0) {
-			index = i;
-			break;
-		}
-	}
-	vaksinasi[index].nik = nik;
-	vaksinasi[index].nama = nama;
-	vaksinasi[index].tanggal = tanggal_lahir;
-	vaksinasi[index].hp = no_hp;
-	vaksinasi[index].alamat = alamat;
-	return index;
-}
-
-int check_tahap(int nik) {
-	for(int i = 0; i < MAKS_VAKSINASI; i++) {
-		if(vaksinasi[i].nik == nik) {
-			return vaksinasi[i].jumlah;
-		}
-	}
-}
-
-void proses_vaksinasi_kedua(int index, int tahap) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-	cout << "========================================================================" << endl;
-    cout << "|                              MEJA KEDUA                              |" << endl;
-	cout << "========================================================================" << endl;
-	float suhu_tubuh;
-	string tekanan_darah;
-	cout << "| Masukkan Suhu Tubuh    : "; cin >> suhu_tubuh;
-	cout << "| Masukkan Tekanan Darah : "; cin >> tekanan_darah;
-	bool status = insert_meja_kedua(index, tahap, suhu_tubuh, tekanan_darah);
-	if(status == true) {
-		cout << "========================================================================" << endl;
-	    cout << "| Sukses: Meja kedua selesai                                           |" << endl;
-		cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk melanjutkan..."; getch(); cout << endl;
-		proses_vaksinasi_ketiga(index, tahap);
-	} else {
-		cout << "========================================================================" << endl;
-	    cout << "| Error: Terjadi kesalahan!                                            |" << endl;
-		cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-		show_menu();
-	}
-}
-
-bool insert_meja_kedua(int index, int tahap, float suhu_tubuh, string tekanan_darah) {
-	vaksinasi[index].suhu[tahap] = suhu_tubuh;
-	vaksinasi[index].tekanan[tahap] = tekanan_darah;
-	return true;
-}
-
-void proses_vaksinasi_ketiga(int index, int tahap) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-	cout << "========================================================================" << endl;
-    cout << "|                              MEJA KETIGA                             |" << endl;
-	cout << "========================================================================" << endl;
-	for(int i = 0; i < MAKS_VAKSIN; i++) {
-		if(vaksin[i].nama == "") {
-			continue;
-		} else {
-			cout << "| Vaksin ke-" << i+1 << endl;
-			cout << "| Nama Vaksin : " << vaksin[i].nama << endl;
-			cout << "| Produksi    : " << vaksin[i].produksi << endl;
-			cout << "| Penggunaan  : " << vaksin[i].penggunaan << endl;
-		    cout << "========================================================================" << endl;
-		}
-	}
-	int nomor_vaksin, nomor_batch_vaksin;
-	cout << "| Masukkan Nomor Vaksin       : "; cin >> nomor_vaksin;
-	cout << "| Masukkan Nomor Batch Vaksin : "; cin >> nomor_batch_vaksin;
-	bool status = insert_meja_ketiga(index, tahap, nomor_vaksin, nomor_batch_vaksin);
-	if(status == true) {
-		cout << "========================================================================" << endl;
-	    cout << "| Sukses: Meja ketiga selesai                                          |" << endl;
-		cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk melanjutkan..."; getch(); cout << endl;
-		proses_vaksinasi_keempat(index, tahap);
-	} else {
-		cout << "========================================================================" << endl;
-	    cout << "| Error: Terjadi kesalahan!                                            |" << endl;
-		cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-		show_menu();
-	}
-}
-
-bool insert_meja_ketiga(int index, int tahap, int nomor_vaksin, int nomor_batch_vaksin) {
-	vaksinasi[index].vaksin[tahap] = vaksin[nomor_vaksin-1].nama;
-	vaksinasi[index].batch[tahap] = nomor_batch_vaksin;
-	vaksinasi[index].jumlah++;
-	vaksin[nomor_vaksin-1].penggunaan++;
-	return true;
-}
-
-void proses_vaksinasi_keempat(int index, int tahap) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-	cout << "========================================================================" << endl;
-    cout << "|                              MEJA KEEMPAT                            |" << endl;
-	cout << "========================================================================" << endl;
-	string kipi;
-	cin.ignore();
-	cout << "| Masukkan KIPI : "; getline(cin, kipi);
-	bool status = insert_meja_keempat(index, tahap, kipi);
-	if(status == true) {
-		cout << "========================================================================" << endl;
-	    cout << "| Sukses: Meja keempat selesai                                         |" << endl;
-		cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk melanjutkan..."; getch(); cout << endl;
-		final_vaksinasi(index, tahap);
-	} else {
-		cout << "========================================================================" << endl;
-	    cout << "| Error: Terjadi kesalahan!                                            |" << endl;
-		cout << "========================================================================" << endl;
-		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-		show_menu();
-	}
-}
-
-bool insert_meja_keempat(int index, int tahap, string kipi) {
-	vaksinasi[index].kipi[tahap] = kipi;
-	return true;
-}
-
-void final_vaksinasi(int index, int tahap) {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
-	cout << "========================================================================" << endl;
-    cout << "|                           DATA VAKSINASI                             |" << endl;
-	cout << "========================================================================" << endl;
-	cout << "| Nama               : " << vaksinasi[index].nama << endl;
-	cout << "| NIK                : " << vaksinasi[index].nik << endl;
-	cout << "| Tanggal Lahir      : " << vaksinasi[index].tanggal << endl;
-	cout << "| No HP              : " << vaksinasi[index].hp << endl;
-	cout << "| Alamat             : " << vaksinasi[index].alamat << endl;
-	cout << "| Vaksinasi Ke       : " << vaksinasi[index].jumlah << endl;
-	cout << "| Suhu Tubuh         : " << vaksinasi[index].suhu[tahap] << endl;
-	cout << "| Tekanan Darah      : " << vaksinasi[index].tekanan[tahap] << endl;
-	cout << "| Nama Vaksin        : " << vaksinasi[index].vaksin[tahap] << endl;
-	cout << "| Nomor Batch Vaksin : " << vaksinasi[index].batch[tahap] << endl;
-	cout << "| KIPI               : " << vaksinasi[index].kipi[tahap] << endl;
-	cout << "========================================================================" << endl;
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu();
-}
-
-void about_app() {
-	system("cls");
-	cout << "========================================================================" << endl;
-    cout << "|                           TENTANG APLIKASI                           |" << endl;
-    cout << "========================================================================" << endl;
-    cout << "| Nama Aplikasi        : Vaksinasi COVID-19                            |" << endl;
-    cout << "| Versi                : 1.0                                           |" << endl;
-    cout << "| Pengembang           : Andi Alfian Bahtiar (2009106002)              |" << endl;
-    cout << "| Donasi Pengembangan  : 056301058860507     (BRI)                     |" << endl;
-    cout << "|                      : 7995048523          (BCA)                     |" << endl;
-    cout << "|                      : 4132282159          (Permata)                 |" << endl;
-    cout << "|                      : 1480016496716       (Mandiri)                 |" << endl;
-    cout << "|                      : 90020219079         (Jenius)                  |" << endl;
-    cout << "|                      : 085346816962        (Dana/OVO/Gopay/LinkAja)  |" << endl;
-    cout << "|                                                                      |" << endl;
-    cout << "|                  Hak Cipta 2021 Vaksinasi COVID-19                   |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
-	show_menu();
 }
 
 void close_app() {
@@ -1103,11 +332,49 @@ void close_app() {
 }
 
 int main() {
-	while(true) {
-		try {
-			show_auth();
-		} catch(...) {
-			close_app();
+	struct Node* HEAD = NULL;
+	int selected_menu;
+	while(selected_menu != 9) {
+		system("cls");
+		cout << "========================================================================" << endl;
+	    cout << "|                      APLIKASI VAKSINASI COVID-19                     |" << endl;
+	    cout << "========================================================================" << endl;
+	    cout << "| [1] Lihat Data Vaksin COVID-19                                       |" << endl;
+	    cout << "| [2] Tambah Data Vaksin COVID-19                                      |" << endl;
+	    cout << "| [3] Ubah Data Vaksin COVID-19                                        |" << endl;
+	    cout << "| [4] Hapus Data Vaksin COVID-19                                       |" << endl;
+	    cout << "| [5] Urut Data Vaksin COVID-19                                        |" << endl;
+	    cout << "| [6] Cari Data Vaksin COVID-19                                        |" << endl;
+	    cout << "| [9] Keluar Aplikasi                                                  |" << endl;
+	    cout << "========================================================================" << endl;
+		cout << "Pilih Menu> "; cin >> selected_menu;
+		switch(selected_menu) {
+			case 1:
+				show_vaksin(HEAD);
+				break;
+			case 2:
+				add_vaksin(&HEAD);
+				break;
+			case 3:
+				edit_vaksin(HEAD);
+				break;
+			case 4:
+				delete_vaksin(&HEAD);
+				break;
+			case 5:
+				sort_vaksin(HEAD);
+				break;
+			case 6:
+				search_vaksin(HEAD);
+				break;
+			case 9:
+				close_app();
+				break;
+			default:
+				cout << "========================================================================" << endl;
+	        	cout << "| Error: Anda memilih menu yang salah!                                 |" << endl;
+	        	cout << "========================================================================" << endl;
+				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 		}
 	}
 	return 0;
