@@ -148,8 +148,9 @@ void add_vaksin(Node **head, Node **tail) {
 	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 }
 
-void edit_vaksin(Node *head) {
+void edit_vaksin(Node *head, Node *tail) {
 	system("cls");
+	int selected_menu;
 	cout << "========================================================================" << endl;
     cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
     cout << "========================================================================" << endl;
@@ -160,38 +161,77 @@ void edit_vaksin(Node *head) {
 		cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 		return;
 	}
-	while(head != NULL) {
-		cout << "| ID Vaksin   : " << head->data.id << endl;
-		cout << "| Nama Vaksin : " << head->data.nama << endl;
-		cout << "| Produksi    : " << head->data.produksi << endl;
-		cout << "| Penggunaan  : " << head->data.penggunaan << endl;
-	    cout << "========================================================================" << endl;
-	    head = head->next;
-	}
+	cout << "| [1] Edit diawal                                                      |" << endl;
+	cout << "| [2] Edit diakhir                                                     |" << endl;
+	cout << "| [3] Edit ditentukan                                                  |" << endl;
+    cout << "========================================================================" << endl;
+	cout << "| Pilih Menu> "; cin >> selected_menu;
 	string id, nama, produksi;
 	int penggunaan;
-	cout << "| Masukkan ID Vaksin         : "; cin >> id;
-	cin.ignore();
-	cout << "| Masukkan Nama Vaksin       : "; getline(cin, nama);
-	cout << "| Masukkan Produksi Vaksin   : "; getline(cin, produksi);
-	cout << "| Masukkan Penggunaan Vaksin : "; cin >> penggunaan;
-	while(newdata != NULL) {
-		if(newdata->data.id == id) {
-			newdata->data.nama = nama;
-			newdata->data.produksi = produksi;
-			newdata->data.penggunaan = penggunaan;
+	system("cls");
+	cout << "========================================================================" << endl;
+    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
+    cout << "========================================================================" << endl;
+	switch(selected_menu) {
+		case 1:
+			cin.ignore();
+			cout << "| Masukkan Nama Vaksin       : "; getline(cin, head->data.nama);
+			cout << "| Masukkan Produksi Vaksin   : "; getline(cin, head->data.produksi);
+			cout << "| Masukkan Penggunaan Vaksin : "; cin >> head->data.penggunaan;			
 		    cout << "========================================================================" << endl;
 		    cout << "| Sukses: Data Vaksin berhasil diperbaharui                            |" << endl;
 		    cout << "========================================================================" << endl;
 			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			break;
+		case 2:
+			cin.ignore();
+			cout << "| Masukkan Nama Vaksin       : "; getline(cin, tail->data.nama);
+			cout << "| Masukkan Produksi Vaksin   : "; getline(cin, tail->data.produksi);
+			cout << "| Masukkan Penggunaan Vaksin : "; cin >> tail->data.penggunaan;			
+		    cout << "========================================================================" << endl;
+		    cout << "| Sukses: Data Vaksin berhasil diperbaharui                            |" << endl;
+		    cout << "========================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			break;
+		case 3:
+			while(head != NULL) {
+				cout << "| ID Vaksin   : " << head->data.id << endl;
+				cout << "| Nama Vaksin : " << head->data.nama << endl;
+				cout << "| Produksi    : " << head->data.produksi << endl;
+				cout << "| Penggunaan  : " << head->data.penggunaan << endl;
+			    cout << "========================================================================" << endl;
+			    head = head->next;
+			}
+			cout << "| Masukkan ID Vaksin         : "; cin >> id;
+			cin.ignore();
+			cout << "| Masukkan Nama Vaksin       : "; getline(cin, nama);
+			cout << "| Masukkan Produksi Vaksin   : "; getline(cin, produksi);
+			cout << "| Masukkan Penggunaan Vaksin : "; cin >> penggunaan;
+			while(newdata != NULL) {
+				if(newdata->data.id == id) {
+					newdata->data.nama = nama;
+					newdata->data.produksi = produksi;
+					newdata->data.penggunaan = penggunaan;
+				    cout << "========================================================================" << endl;
+				    cout << "| Sukses: Data Vaksin berhasil diperbaharui                            |" << endl;
+				    cout << "========================================================================" << endl;
+					cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+					return;
+				}
+				newdata = newdata->next;
+			}
+		    cout << "========================================================================" << endl;
+		    cout << "| Error: Data Vaksin gagal diperbaharui                                |" << endl;
+		    cout << "========================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+			break;
+		default:
+			cout << "========================================================================" << endl;
+			cout << "| Error: Pilihan Salah!                                                |" << endl;
+			cout << "========================================================================" << endl;
+			cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 			return;
-		}
-		newdata = newdata->next;
 	}
-    cout << "========================================================================" << endl;
-    cout << "| Error: Data Vaksin gagal diperbaharui                                |" << endl;
-    cout << "========================================================================" << endl;
-	cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
 }
 
 void delete_vaksin(Node **head, Node **tail) {
@@ -208,9 +248,16 @@ void delete_vaksin(Node **head, Node **tail) {
 	}
 	cout << "| [1] Hapus diawal                                                     |" << endl;
 	cout << "| [2] Hapus diakhir                                                    |" << endl;
+	cout << "| [3] Hapus ditentukan                                                 |" << endl;
     cout << "========================================================================" << endl;
 	cout << "| Pilih Menu> "; cin >> selected_menu;
-	Node *temp = *head;
+	Node *olddata = *head;
+	Node *newdata = *head;
+	string id;
+	system("cls");
+	cout << "========================================================================" << endl;
+    cout << "|                         DATA VAKSIN COVID-19                         |" << endl;
+    cout << "========================================================================" << endl;
 	switch(selected_menu) {
 		case 1:
 			if((*head)->next == NULL) {
@@ -223,7 +270,7 @@ void delete_vaksin(Node **head, Node **tail) {
 				return;
 			}
 			DEL = *head;
-			*head = temp->next;
+			*head = olddata->next;
 			(*head)->prev = NULL;
 			delete DEL;
 			break;
@@ -241,6 +288,65 @@ void delete_vaksin(Node **head, Node **tail) {
 			*tail = (*tail)->prev;
 			(*tail)->next = NULL;
 			delete DEL;
+			break;
+		case 3:
+			while(olddata != NULL) {
+				cout << "| ID Vaksin   : " << olddata->data.id << endl;
+				cout << "| Nama Vaksin : " << olddata->data.nama << endl;
+				cout << "| Produksi    : " << olddata->data.produksi << endl;
+				cout << "| Penggunaan  : " << olddata->data.penggunaan << endl;
+			    cout << "========================================================================" << endl;
+			    olddata = olddata->next;
+			}
+			cout << "| Masukkan ID Vaksin : "; cin >> id;
+			cin.ignore();
+			if((*head)->data.id == id) {
+				if((*head)->next == NULL) {
+					*head = NULL;
+					*tail = NULL;					
+					cout << "========================================================================" << endl;
+					cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
+					cout << "========================================================================" << endl;
+					cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+					return;
+				}
+				DEL = *head;
+				*head = olddata->next;
+				(*head)->prev = NULL;
+				delete DEL;
+			} else if ((*tail)->data.id == id) {
+				if((*head)->next == NULL) {
+					*head = NULL;
+					*tail = NULL;
+					cout << "========================================================================" << endl;
+					cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
+					cout << "========================================================================" << endl;
+					cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+					return;
+				}
+				DEL = *tail;
+				*tail = (*tail)->prev;
+				(*tail)->next = NULL;
+				delete DEL;
+			} else {
+				while(newdata != NULL) {
+					if(newdata->data.id == id) {
+						(newdata->prev)->next = newdata->next;
+						(newdata->next)->prev = newdata->prev;
+						cout << "========================================================================" << endl;
+						cout << "| Sukses: Data Vaksin berhasil dihapus                                 |" << endl;
+						cout << "========================================================================" << endl;
+						cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+						return;
+					}
+					newdata = newdata->next;
+				}
+			    cout << "========================================================================" << endl;
+			    cout << "| Error: Data Vaksin gagal dihapus                                     |" << endl;
+			    cout << "========================================================================" << endl;
+				cout << "Tekan 'Enter' untuk kembali..."; getch(); cout << endl;
+				return;
+			}
 			break;
 		default:
 			cout << "========================================================================" << endl;
@@ -334,7 +440,7 @@ void sort_vaksin(Node *head, Node *tail) {
 	cout << "| [1] Ascending                                                        |" << endl;
 	cout << "| [2] Descending                                                       |" << endl;
 	cout << "========================================================================" << endl;
-	cout << "| Pilih Menu> "; cin >> selected_order;	
+	cout << "| Pilih Menu> "; cin >> selected_order;
 	shellSort(&vaksin[0], i, selected_menu, selected_order);
 	i = 0;
 	while(newdata != NULL) {
@@ -342,10 +448,13 @@ void sort_vaksin(Node *head, Node *tail) {
 		newdata->data.nama = vaksin[i].nama;
 		newdata->data.produksi = vaksin[i].produksi;
 		newdata->data.penggunaan = vaksin[i].penggunaan;
-//		newdata->prev = NULL;
+		if(i == 0) {
+			newdata->prev = NULL;
+		}
 		newdata = newdata->next;
 		i++;
 	}
+	tail = newdata;
 	cout << "========================================================================" << endl;
     cout << "| Sukses: Data Vaksin berhasil diurutkan                               |" << endl;
 	cout << "========================================================================" << endl;
@@ -524,7 +633,7 @@ int main() {
 				add_vaksin(&HEAD, &TAIL);
 				break;
 			case 3:
-				edit_vaksin(HEAD);
+				edit_vaksin(HEAD, TAIL);
 				break;
 			case 4:
 				delete_vaksin(&HEAD, &TAIL);
