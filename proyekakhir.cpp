@@ -631,9 +631,9 @@ void show_menu_pengguna() {
     cout << "| [2] Tambah Data Pengguna                                             |" << endl;
     cout << "| [3] Ubah Data Pengguna                                               |" << endl;
     cout << "| [4] Hapus Data Pengguna                                              |" << endl;
-    cout << "| [5] Urut Data Pengguna                                               |" << endl;
-    cout << "| [6] Cari Data Pengguna                                               |" << endl;
-    cout << "| [7] Kembali                                                          |" << endl;
+//    cout << "| [5] Urut Data Pengguna                                               |" << endl;
+//    cout << "| [6] Cari Data Pengguna                                               |" << endl;
+    cout << "| [5] Kembali                                                          |" << endl;
     cout << "| [0] Keluar Aplikasi                                                  |" << endl;
     cout << "========================================================================" << endl;
 	cout << "Pilih Menu> "; cin >> selected_menu;
@@ -650,13 +650,13 @@ void show_menu_pengguna() {
 		case 4:
 			delete_pengguna();
 			break;
+//		case 5:
+//			// Urut
+//			break;
+//		case 6:
+//			// Cari
+//			break;
 		case 5:
-			// Urut
-			break;
-		case 6:
-			// Cari
-			break;
-		case 7:
 			show_menu_admin();				
 			break;
 		case 0:
