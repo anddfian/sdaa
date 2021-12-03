@@ -836,15 +836,16 @@ void show_pengguna() {
 			continue;
 		} else {
 			cout << "| Pengguna ke-" << i + 1 << endl;
-			cout << "| Username  : " << accounts[i].username << endl;
-			cout << "| Password  : " << accounts[i].password << endl;
-			cout << "| Level     : " << accounts[i].level << endl;
-			cout << "| NIK       : " << accounts[i].nik << endl;
-			cout << "| Nama      : " << accounts[i].nama << endl;
-			cout << "| Umur      : " << accounts[i].umur << endl;
-			cout << "| No HP     : " << accounts[i].nohp << endl;
-			cout << "| Alamat    : " << accounts[i].alamat << endl;
-			cout << "| Vaksinasi : " << accounts[i].vaksinasi << endl;
+			cout << "| Username      : " << accounts[i].username << endl;
+			cout << "| Password      : " << accounts[i].password << endl;
+			cout << "| Level         : " << accounts[i].level << endl;
+			cout << "| NIK           : " << accounts[i].nik << endl;
+			cout << "| Nama          : " << accounts[i].nama << endl;
+			cout << "| Umur          : " << accounts[i].umur << endl;
+			cout << "| No HP         : " << accounts[i].nohp << endl;
+			cout << "| Alamat        : " << accounts[i].alamat << endl;
+			cout << "| Tanggal Lahir : " << accounts[i].tanggal_lahir << endl;
+			cout << "| Vaksinasi     : " << accounts[i].vaksinasi << endl;
 		    cout << "========================================================================" << endl;
 		}
 	}
@@ -865,20 +866,21 @@ void add_pengguna() {
 		}
 	}
 	if(index != -1) {
-		string username, password, nama, alamat, level;
+		string username, password, nama, alamat, tanggal_lahir, level;
 		long long nik, nohp;
 		int umur;
 		cin.ignore();
-		cout << "| Username : "; getline(cin, username);
-		cout << "| Password : "; getline(cin, password);
-		cout << "| Level    : "; cin >> level;
-		cout << "| NIK      : "; cin >> nik;
+		cout << "| Username      : "; getline(cin, username);
+		cout << "| Password      : "; getline(cin, password);
+		cout << "| Level         : "; cin >> level;
+		cout << "| NIK           : "; cin >> nik;
 		cin.ignore();
-		cout << "| Nama     : "; getline(cin, nama);
-		cout << "| Umur     : "; cin >> umur;
-		cout << "| No. HP   : "; cin >> nohp;
+		cout << "| Nama          : "; getline(cin, nama);
+		cout << "| Umur          : "; cin >> umur;
+		cout << "| No. HP        : "; cin >> nohp;
 		cin.ignore();
-		cout << "| Alamat   : "; getline(cin, alamat);
+		cout << "| Alamat        : "; getline(cin, alamat);
+		cout << "| Tanggal Lahir : "; getline(cin, tanggal_lahir);
 		int status = -1;
 		for(int i = 0; i < MAKS_ACCOUNT; i++) {
 			if(accounts[i].username == username) {
@@ -895,6 +897,7 @@ void add_pengguna() {
 			accounts[index].umur = umur;
 			accounts[index].nohp = nohp;
 			accounts[index].alamat = alamat;
+			accounts[index].tanggal_lahir = tanggal_lahir;
 			accounts[index].vaksinasi = false;
 	        cout << "========================================================================" << endl;
 	        cout << "| Sukses: Akun berhasil dibuat dan disimpan                            |" << endl;
@@ -919,20 +922,21 @@ void edit_pengguna() {
 			continue;
 		} else {
 			cout << "| Pengguna ke-" << i + 1 << endl;
-			cout << "| Username  : " << accounts[i].username << endl;
-			cout << "| Password  : " << accounts[i].password << endl;
-			cout << "| Level     : " << accounts[i].level << endl;
-			cout << "| NIK       : " << accounts[i].nik << endl;
-			cout << "| Nama      : " << accounts[i].nama << endl;
-			cout << "| Umur      : " << accounts[i].umur << endl;
-			cout << "| No HP     : " << accounts[i].nohp << endl;
-			cout << "| Alamat    : " << accounts[i].alamat << endl;
-			cout << "| Vaksinasi : " << accounts[i].vaksinasi << endl;
+			cout << "| Username      : " << accounts[i].username << endl;
+			cout << "| Password      : " << accounts[i].password << endl;
+			cout << "| Level         : " << accounts[i].level << endl;
+			cout << "| NIK           : " << accounts[i].nik << endl;
+			cout << "| Nama          : " << accounts[i].nama << endl;
+			cout << "| Umur          : " << accounts[i].umur << endl;
+			cout << "| No HP         : " << accounts[i].nohp << endl;
+			cout << "| Alamat        : " << accounts[i].alamat << endl;
+			cout << "| Tanggal Lahir : " << accounts[i].tanggal_lahir << endl;
+			cout << "| Vaksinasi     : " << accounts[i].vaksinasi << endl;
 		    cout << "========================================================================" << endl;
 		}
 	}
 	int nomor;
-	string username, password, nama, alamat, level;
+	string username, password, nama, alamat, tanggal_lahir, level;
 	long long nik, nohp;
 	int umur;
 	bool vaksinasi;
@@ -948,6 +952,7 @@ void edit_pengguna() {
 	cout << "| Masukkan No. HP         : "; cin >> nohp;
 	cin.ignore();
 	cout << "| Masukkan Alamat         : "; getline(cin, alamat);
+	cout << "| Masukkan Tanggal Lahir  : "; getline(cin, tanggal_lahir);
 	cout << "| Masukkan Vaksinasi      : "; cin >> vaksinasi;
 	accounts[nomor-1].username = username;
 	accounts[nomor-1].password = password;
@@ -957,6 +962,7 @@ void edit_pengguna() {
 	accounts[nomor-1].umur = umur;
 	accounts[nomor-1].nohp = nohp;
 	accounts[nomor-1].alamat = alamat;
+	accounts[nomor-1].tanggal_lahir = tanggal_lahir;
 	accounts[nomor-1].vaksinasi = vaksinasi;
     cout << "========================================================================" << endl;
     cout << "| Sukses: Akun berhasil diperbaharui                                   |" << endl;
@@ -975,15 +981,16 @@ void delete_pengguna() {
 			continue;
 		} else {
 			cout << "| Pengguna ke-" << i + 1 << endl;
-			cout << "| Username  : " << accounts[i].username << endl;
-			cout << "| Password  : " << accounts[i].password << endl;
-			cout << "| Level     : " << accounts[i].level << endl;
-			cout << "| NIK       : " << accounts[i].nik << endl;
-			cout << "| Nama      : " << accounts[i].nama << endl;
-			cout << "| Umur      : " << accounts[i].umur << endl;
-			cout << "| No HP     : " << accounts[i].nohp << endl;
-			cout << "| Alamat    : " << accounts[i].alamat << endl;
-			cout << "| Vaksinasi : " << accounts[i].vaksinasi << endl;
+			cout << "| Username      : " << accounts[i].username << endl;
+			cout << "| Password      : " << accounts[i].password << endl;
+			cout << "| Level         : " << accounts[i].level << endl;
+			cout << "| NIK           : " << accounts[i].nik << endl;
+			cout << "| Nama          : " << accounts[i].nama << endl;
+			cout << "| Umur          : " << accounts[i].umur << endl;
+			cout << "| No HP         : " << accounts[i].nohp << endl;
+			cout << "| Alamat        : " << accounts[i].alamat << endl;
+			cout << "| Tanggal Lahir : " << accounts[i].tanggal_lahir << endl;
+			cout << "| Vaksinasi     : " << accounts[i].vaksinasi << endl;
 		    cout << "========================================================================" << endl;
 		}
 	}
@@ -997,6 +1004,7 @@ void delete_pengguna() {
 	accounts[nomor-1].umur = 0;
 	accounts[nomor-1].nohp = 0;
 	accounts[nomor-1].alamat = "";
+	accounts[nomor-1].tanggal_lahir = "";
 	accounts[nomor-1].vaksinasi = false;
 	cout << "========================================================================" << endl;
     cout << "| Sukses: Akun berhasil dihapus                                        |" << endl;
@@ -1773,25 +1781,28 @@ int main() {
 	accounts[0].nama = "Andi Alfian Bahtiar";
 	accounts[0].umur = 19;
 	accounts[0].nohp = 6285346816962;
-	accounts[0].alamat = "Jl. Perjuangan 7";
+	accounts[0].tanggal_lahir = "Sangatta, 8 April 2002";
+	accounts[0].alamat = "Gg. Simpati No. 15";
 
 	accounts[1].username = "dinkes";
 	accounts[1].password = "dinkes";
 	accounts[1].level = "dinkes";
-	accounts[1].nik = 6408120804020002;
+	accounts[1].nik = 3206270901010003;
 	accounts[1].nama = "Fathan Ghoji Adzikra";
 	accounts[1].umur = 19;
-	accounts[1].nohp = 6285346816962;
+	accounts[1].nohp = 6287829337333;
+	accounts[1].tanggal_lahir = "Tasikmalaya, 9 Januari 2002";
 	accounts[1].alamat = "Jl. Perjuangan 7";
 
 	accounts[2].username = "user";
 	accounts[2].password = "user";
 	accounts[2].level = "user";
-	accounts[2].nik = 6408120804020001;
+	accounts[2].nik = 6402171101030002;
 	accounts[2].nama = "Muh. Fathir Fahreza";
-	accounts[2].umur = 19;
-	accounts[2].nohp = 6285346816962;
-	accounts[2].alamat = "Jl. Perjuangan 7";
+	accounts[2].umur = 18;
+	accounts[2].nohp = 6282250731968;
+	accounts[2].tanggal_lahir = "Samarinda, 11 Januari 2003";
+	accounts[2].alamat = "Jl. Aru Palakka";
 
 	// Data Vaksin
 	vaksin[0].nama = "SinoVac";
